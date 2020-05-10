@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- securityManager安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="customRealm"></property>
+    </bean>
+
+    <!-- 配置自定义Realm -->
+    <bean id="customRealm" class="com.yan.open.realm.CustomRealm">
+        <property name="credentialsMatcher">
+                <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                    <property name="hashAlgorithmName" value="MD5"></property>
+                    <property name="hashIterations" value="1024"></property>
+                </bean>
+        </property>
+    </bean>
+    <!-- Shiro生命周期处理器,可以自动的来调用配置在spring IOC 容器中shiro bean的生命周期方法-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+    <!--5. 启用 IOC 容器中使用 shiro 的注解. 但必须在配置了 LifecycleBeanPostProcessor 之后才可以使用.-->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
+    <!-- Shiro的web过滤器  id属性值要对应web.xml的shiro的filter对应的bean -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/> <!--安全管理-->
+        <property name="loginUrl" value="/restaurant/login"/> <!--登录页面-->
+        <property name="unauthorizedUrl" value="/restaurant/unauthorized"/> <!--当没有权限的时候，跳转到这个url-->
+        <!--
+            配置哪些页面需要受保护.以及访问这些页面需要的权限.
+            1). anon 可以被匿名访问
+            2). authc 必须认证(即登录)后才可能访问的页面.
+            3). logout 登出.
+            4). roles 角色过滤器
+        -->
+        <property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"></property>
+    </bean>
+    <!-- 配置一个bean，该bean实际是一个Map，通过实例工厂方法的方式 -->
+    <bean id="filterChainDefinitionMap" factory-bean="filterChainDefinitionMapBuilder" factory-method="builderFilterChainDefinitionMap"></bean>
+    <bean id="filterChainDefinitionMapBuilder" class="com.yan.open.factory.FilterChainDefinitionMapBuilder"></bean>
+
+</beans>

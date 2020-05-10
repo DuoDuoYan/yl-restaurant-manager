@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="/static/css/bootstrapValidator.css" />
+		<!-- 自定义css -->
+		<link rel="stylesheet" type="text/css" href="/static/css/default/admin.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/default/order.css"/>
+		<!-- datetimepicker 时间插件 -->
+		<link href="/static/css/jquery.datetimepicker.css" rel="stylesheet"/>
+		<!-- bootstrap-table css -->
+		<link href="/static/css/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+		
+		<link href="/static/css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+		
+		<link href="/static/css/bootstrap-table/bootstrap-table-page-jump-to.css" rel="stylesheet"/>
+		<!-- JQUERY SCRIPTS -->
+		<script src="/static/js/jquery/jquery-3.4.1.min.js" ></script>
+		<!-- BOOTSTRAP SCRIPTS -->
+		<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+		<script src="/static/js/bootstrapValidator.min.js"></script>
+		<script src="/static/js/default/order.js"></script>
+		<!-- datetimepicker 时间插件js -->
+		<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.zh-CN.js"></script>
+		<!-- bootstrap-table js -->
+		<script src="/static/js/bootstrap-table/bootstrap-table.min.js"></script>
+		<script src="/static/js/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+		<script src="/static/js/bootstrap-table/bootstrap-table-zh-CN.js"></script>
+		<script src="/static/js/bootstrap-table/comment-tool.js"></script>
+		<script type="text/javascript" src="/static/js/bootstrap-table/bootstrap-table-page-jump-to.js"></script>
+		<!-- 模糊搜索 js -->
+	</head>
+	<body>
+		<div id="contain" style="height: 600px;">
+			<div id="header">
+				
+				<div class="form-group">
+                    <label class="order-date" for="startTime">下单日期：</label>
+                    <input class="form-control datetimepicker" style="width:8em"  id="startTime" name="startTime">
+                </div>
+                <div class="form-group">
+                    <input  class="form-control datetimepicker"  style="width:8em" id="endTime" name="endTime">
+                </div>
+				<input type="text" class="form-control" id="condition" placeholder="订单编号"/>
+				<img id="search" src="/static/image/_search.png" alt="搜索">
+				<a href="#refresh" id="refresh" class="header_edit"><img src="/static/image/refresh.png" class="header_icon"></a>
+			</div>
+
+			<div class="modal fade" id="viewOrderDetail" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<img src="/static/image/view.png" class="model-header-image">
+							<h4 class="modal-title" id="viewModalLabel">
+								查看订单详情
+							</h4>
+						</div>
+						<div class="modal-body">
+							<table class="table" id="dataDetail">
+								<thead>
+									<tr>
+										<th>菜品名称</th>
+										<th>单价</th>
+										<th>数量</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="content">
+				<div id="table">
+					<table id="dataTable" data-show-jumpto="true" data-mobile-responsive="true" style=" white-space:nowrap">
+					</table>
+				</div>
+			</div>
+
+
+		</div>
+		<script>
+			$('.datetimepicker').datetimepicker({
+				dayOfWeekStart : 1,
+				language:'zh-CN',
+				minView:2,//设置只显示到日
+				todayBtn: true,
+				format:'yyyy/mm/dd',
+				autoclose: true,
+				startView: 2,
+				weekStart: 1,
+				forceParse: 0
+			});
+   
+		</script>
+	</body>
+</html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/mvc
+                        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <import resource="classpath:spring/spring-shiro.xml"/>
+
+    <!--自动扫描该包，使SpringMVC认为包下用了@Controller注解的类是控制器-->
+    <context:component-scan base-package="com.yan.open.controller"/>
+
+    <!--开启springmvc注解模式-->
+    <mvc:annotation-driven/>
+
+    <!--静态资源放行-->
+    <mvc:resources location="/static/bootstrap/" mapping="/static/bootstrap/**" />
+    <mvc:resources location="/static/css/" mapping="/static/css/**" />
+    <mvc:resources location="/static/js/" mapping="/static/js/**" />
+    <mvc:resources location="/static/image/" mapping="/static/image/**" />
+    <mvc:resources location="/upload/" mapping="/restaurant/upload/**"/>
+
+    <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+        <property name="templateEngine" ref="templateEngine" />
+        <property name="characterEncoding" value="UTF-8"/>
+    </bean>
+
+    <!-- 模板引擎 -->
+    <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver"/>
+    </bean>
+
+    <!-- 模板解析器 -->
+    <bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix" value="/static/view/"/>
+        <property name="suffix" value=".html" />
+        <property name="characterEncoding" value="UTF-8"/>
+        <property name="order" value="1"/>
+        <property name="templateMode" value="HTML5"/>
+        <property name="cacheable" value="false"/>
+    </bean>
+
+    <!-- 文件上传解析器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"/><!-- 默认编码ISO-8859-1 -->
+        <property name="maxInMemorySize" value="10240"/><!-- 最大内存 10M -->
+        <property name="uploadTempDir" value="/upload/" /><!-- 上传的文件名字 -->
+        <property name="maxUploadSize" value="-1" /><!-- 最大文件，-1不限制 -->
+    </bean>
+
+</beans>

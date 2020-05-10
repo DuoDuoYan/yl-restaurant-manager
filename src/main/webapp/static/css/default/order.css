@@ -1,0 +1,48 @@
+#condition{
+	width: 300px;
+	margin-left: 50px;
+	float: left;
+}
+#search{
+	height: 30px;
+	width: 30px;
+	float: left;
+	margin-left: 10px;
+}
+.order-date{
+	float: left;
+	font-size: 18px;
+	margin-left: 50px;
+}
+#startTime{
+	float: left;
+}
+#endTime{
+	float: left;
+	margin-left: 30px;
+}
+.form-group{
+	float: left;
+}
+#table{
+	width: 1120px;
+	margin-left: 9px;
+}
+
+.header_icon{
+	height: 30px;
+	width: 30px;
+	margin-right: 5px;
+}
+#refresh{
+	margin-left: 50px;
+}
+#refresh a{
+	text-decoration: none;
+	cursor: pointer;
+	color: black;
+
+}
+#refresh a:hover{
+	color: red;
+}

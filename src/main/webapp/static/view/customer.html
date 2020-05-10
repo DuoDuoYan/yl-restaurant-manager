@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		
+		<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="/static/css/bootstrapValidator.css" />
+		<!-- datetimepicker 时间插件 -->
+		<link href="/static/css/jquery.datetimepicker.css" rel="stylesheet"/>
+		<!-- bootstrap-table css -->
+		<link href="/static/css/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+		<link href="/static/css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+		<link href="/static/css/bootstrap-table/bootstrap-table-page-jump-to.css" rel="stylesheet"/>
+		<!-- 自定义css -->
+		<link rel="stylesheet" type="text/css" href="/static/css/default/customer.css"/>
+		<!-- JQUERY SCRIPTS -->
+		<script src="/static/js/jquery/jquery-3.4.1.min.js" ></script>
+		<!-- BOOTSTRAP SCRIPTS -->
+		<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+		<script src="/static/js/bootstrapValidator.min.js"></script>
+		<!-- datetimepicker 时间插件js -->
+		<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.zh-CN.js"></script>
+		<!-- bootstrap-table js -->
+		<script src="/static/js/bootstrap-table/bootstrap-table.min.js"></script>
+		<script src="/static/js/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+		<script src="/static/js/bootstrap-table/bootstrap-table-zh-CN.js"></script>
+		<script src="/static/js/bootstrap-table/comment-tool.js"></script>
+		<script type="text/javascript" src="/static/js/bootstrap-table/bootstrap-table-page-jump-to.js"></script>
+		<script src="/static/js/default/customer.js"></script>
+	</head>
+	<body>
+		<div id="contain" style="height: 600px;">
+			<div id="header">
+				<a href="#addCustomer" data-toggle="modal" class="header_edit"><img src="/static/image/add.png" class="header_icon"/><span>新建</span></a>
+				<!--<a href="#updateCustomer" data-toggle="modal" class="header_edit"><img src="/static/image/edit.png" class="header_icon"/><span>修改</span></a>-->
+				<a href="#" id="refresh" class="header_edit"><img src="/static/image/refresh.png" class="header_icon"/><span>刷新</span></a>
+			</div>
+
+            <div class="modal fade" id="addCustomer" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <img src="/static/image/add_title.png" class="model-header-image">
+                            <h4 class="modal-title" id="addModalLabel">
+                                新建管理员信息
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" role="form" id="addCustomerForm">
+                                <div class="form-group">
+                                    <label for="addAccount" class="col-sm-2 control-label">账号</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="addAccount" name="account"
+                                               placeholder="请输入账号/手机号">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addPassword" class="col-sm-2 control-label">密码</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="addPassword" name="password"
+                                               placeholder="请输入密码">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addUsername" class="col-sm-2 control-label">姓名</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="addUsername" name="username"
+                                               placeholder="请输入姓名">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">性别</label>
+                                    <div class="col-sm-9">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="optionsRadiosinline" id="addMale" checked="checked" value="male">男
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="optionsRadiosinline" id="addFemale" value="female">女
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addAge" class="col-sm-2 control-label">年龄</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="addAge" name="age"
+                                               placeholder="请输入年龄">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addAddress" class="col-sm-2 control-label">地址</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="addAddress" name="address"
+                                               placeholder="请输入地址">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> <button type="button" class="btn btn-primary" id="addCustomerBtn">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="updateCustomer" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <img src="/static/image/edit_title.png" class="model-header-image">
+                            <h4 class="modal-title" id="updateModalLabel">
+                                修改管理员信息
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" role="form" id="updateCustomerForm">
+                                <div class="form-group">
+                                    <label for="updateAccount" class="col-sm-2 control-label">账号</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="originalPhone" style="display:none">
+                                        <input type="text" class="form-control" id="updateAccount" readonly="readonly"
+                                               placeholder="请输入账号/手机号">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="updatePassword" class="col-sm-2 control-label">密码</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="updatePassword" name="password"
+                                               placeholder="请输入密码">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="updateUsername" class="col-sm-2 control-label">姓名</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="updateUsername" name="username"
+                                               placeholder="请输入姓名">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">性别</label>
+                                    <div class="col-sm-9">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="optionsRadiosinline" id="updateMale" checked="checked" value="male" >男
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="optionsRadiosinline" id="updateFemale" value="female">女
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="updateAge" class="col-sm-2 control-label">年龄</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="updateAge" name="age"
+                                               placeholder="请输入年龄">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="updateAddress" class="col-sm-2 control-label">地址</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="updateAddress" name="address"
+                                               placeholder="请输入地址">
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> <button type="button" class="btn btn-primary" id="updateCustomerBtn">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="viewCustomer" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <img src="/static/image/view.png" class="model-header-image">
+                            <h4 class="modal-title" id="viewModalLabel">
+                                查看管理员信息
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label for="viewAccount" class="col-sm-2 control-label">账号</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="viewAccount"
+                                               placeholder="请输入账号/手机号">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="viewPassword" class="col-sm-2 control-label">密码</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="viewPassword"
+                                               placeholder="请输入密码">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="viewUsername" class="col-sm-2 control-label">姓名</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="viewUsername"
+                                               placeholder="请输入姓名">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">性别</label>
+                                    <div class="col-sm-9">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="optionsRadiosinline" id="viewMale" checked="checked" value="male" >男
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="optionsRadiosinline" id="viewFemale" value="female">女
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="viewAge" class="col-sm-2 control-label">年龄</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="viewAge"
+                                               placeholder="请输入年龄">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="viewAddress" class="col-sm-2 control-label">地址</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="viewAddress"
+                                               placeholder="请输入地址">
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="delete" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3 class="modal-title" id="deleteModalLabel">
+                                提&nbsp;&nbsp;&nbsp;醒
+                            </h3>
+                        </div>
+                        <div class="modal-body" style="text-align: center">
+                            <h4>删除该用户将会删除该用户下关联的订单信息！</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button> <button type="button" class="btn btn-primary" id="deleteBtn">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content">
+				<div id="table">
+					<table id="dataTable" data-show-jumpto="true" data-mobile-responsive="true" style=" white-space:nowrap">
+					</table>
+				</div>
+			</div>
+		</div>
+		
+	</body>
+</html>

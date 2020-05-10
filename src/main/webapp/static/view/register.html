@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/default/login.css" />
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/mochi.css" />
+    <script type="text/javascript" src="/static/js/jquery/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<div class="contain">
+    <div class="header"></div>
+    <div class="middle">
+        <main id="app">
+            <mochi-box shiba="kinako" mood="gleam" blush
+                       left-eye="open" right-eye="open"
+                       left-ear="middle" right-ear="middle">
+
+                <form class="form-horizontal" method="post" action="/restaurant/toRegister">
+                    <div class="heading">注册</div>
+                    <div>
+                        <span th:text="${session.msg}" class="msg"></span>
+                    </div>
+                    <div class="form-group">
+                        <i class="glyphicon glyphicon-user"></i><input required="required" type="text" class="form-control" name="phone" placeholder="账户">
+                    </div>
+                    <div class="form-group">
+                        <i class="glyphicon glyphicon-lock"></i><input required="required" type="password" class="form-control" name="password" placeholder="密码"/>
+                    </div>
+                    <div class="form-group">
+                        <i class="glyphicon glyphicon-lock"></i><input required="required" type="password" class="form-control" name="repassword" placeholder="确认密码"/>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-arrow-right"></i></button>
+                        <span>已有账号！  <a href="/restaurant/login"  class="create_account">登录</a></span>
+                    </div>
+                </form>
+
+            </mochi-box>
+        </main>
+    </div>
+    <div class="footer"></div>
+</div>
+<script src="/static/js/vue/vue.min.js"></script>
+<script src="/static/js/mochi.js"></script>
+</body>
+</html>

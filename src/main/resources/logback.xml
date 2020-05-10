@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- monitorLog-->
+    <appender name="RUN_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/all.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/run-%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>10</maxIndex>
+            <maxHistory>10</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy/MM/dd-HH:mm:ss.SSS}]-[%level]-[%thread]-[%X{traceId}]-[%class:%line] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/error.log</File>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/bak_error/error-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread]-[%X{requestId}] %-5level %logger{12} %X{traceId} %X{userId} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.yan.open" level="info" additivity="false">
+        <appender-ref ref="RUN_LOG"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </logger>
+
+    <logger name="org.apache.ibatis" level="info" />
+    <logger name="org.mybatis" level="info" />
+
+    <root level="info">
+        <appender-ref ref="RUN_LOG"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+
+    <logger name="com.yan.open.dao" level="DEBUG"/>
+
+</configuration>

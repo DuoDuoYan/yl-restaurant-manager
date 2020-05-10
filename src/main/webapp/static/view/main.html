@@ -1,0 +1,197 @@
+<html lang="CN" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>Y&L管理后台</title>
+		
+		<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="/static/css/default/main.css"/>
+		<script src="/static/js/jquery/jquery-3.4.1.min.js" ></script>
+		<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+		<script src="/static/js/default/main.js"></script>
+	</head>
+	
+	<body>
+		<div class="container">
+			<nav class="navbar navbar-default navbar-top" id="nav-top" role="navigation">
+				<img src="/static/image/logo.png" id="logo"/>
+				<div id="welcome">欢迎您,<span th:text="${session.user}" id="user"></span><p id="nowDate"></p>
+				<input id="userPhone" type="text" style="visibility: hidden">
+				</div>
+				<!-- <div id="search">
+					<input type="text" class="form-control" id="search-input"/>
+					<img id="nav-icon" onclick="search()" src="../image/search.png" alt="搜索">
+				</div> -->
+				<div id="navbar-right">
+					<ul class="nav navbar-nav navbar-right" id="nav-ul">
+						<li>
+							<a href="#editMe" data-toggle="modal" class="header_edit"><img id="nav-icon-me" src="/static/image/me.png"/> 设置</a>
+						</li>
+						<li>
+							 <a href="#"><img id="nav-icon-help" src="/static/image/help.png"/> 帮助</a>
+						</li>
+						<li>
+							 <a href="/restaurant/logout"><img id="nav-icon-out" src="/static/image/out.png"/> 退出</a>
+						</li>
+					</ul>
+				</div>
+				<div class="modal fade" id="editMe" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<img src="/static/image/add_title.png" class="model-header-image">
+								<h4 class="modal-title" id="addModalLabel">
+									修改个人信息
+								</h4>
+							</div>
+							<div class="modal-body">
+								<form class="form-horizontal" role="form" id="addAdminForm">
+									<div class="form-group">
+										<label for="updateAccount" class="col-sm-3 control-label">账号</label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" id="updateAccount" name="account" readonly="readonly"
+												   placeholder="请输入账号/手机号">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="updateUsername" class="col-sm-3 control-label">姓名</label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" id="updateUsername" name="username"
+												   placeholder="请输入姓名">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label">性别</label>
+										<div class="col-sm-7">
+											<label class="radio-inline">
+												<input type="radio" name="optionsRadiosinline" id="updateMale" checked="checked" value="male">男
+											</label>
+											<label class="radio-inline">
+												<input type="radio" name="optionsRadiosinline" id="updateFemale" value="female">女
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="updateAge" class="col-sm-3 control-label">年龄</label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" id="updateAge" name="age"
+												   placeholder="请输入年龄">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="updateAddress" class="col-sm-3 control-label">地址</label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" id="updateAddress" name="address"
+												   placeholder="请输入地址">
+										</div>
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> <button type="button" class="btn btn-primary" id="updateInfoBtn">保存</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</nav>
+					
+			<div class="panel-group" id="panel-left">
+				<div class="panel panel-default" id="col-left-panels">
+					<div class="panel-heading">
+						<img src="/static/image/right.png" class="pane-right"/>
+						<img src="/static/image/employee.png" class="pane-employee" />
+						<a class="panel-title collapsed" onclick="switchPhoto(this)" data-toggle="collapse" data-parent="#panel-left" href="#panel-element-1">员工基本信息</a>
+					</div>
+					<div id="panel-element-1" class="panel-collapse collapse">
+						<div class="panel-body">
+							<ul>
+								<li><a hre="#" id="admin" onclick="switchIframe(this)">管理员基本信息</a></li>
+								<li><a hre="#" id="cooker" onclick="switchIframe(this)">厨师基本信息</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<img src="/static/image/right.png" class="pane-right"/>
+						<img src="/static/image/user.png" class="pane-employee" />
+						<a class="panel-title collapsed" onclick="switchPhoto(this)" data-toggle="collapse" data-parent="#panel-left" href="#panel-element-2">顾客基本信息</a>
+					</div>
+					<div id="panel-element-2" class="panel-collapse collapse">
+						<div class="panel-body">
+							<ul>
+								<li><a hre="#" id="customer" onclick="switchIframe(this)">顾客基本信息</a></li>
+								<li><a hre="#" id="recharge" onclick="switchIframe(this)">账户余额充值</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<img src="/static/image/right.png" class="pane-right"/>
+						<img src="/static/image/food.png" class="pane-employee" />
+						 <a class="panel-title collapsed" onclick="switchPhoto(this)" data-toggle="collapse" data-parent="#panel-left" href="#panel-element-3">菜品基本信息</a>
+					</div>
+					<div id="panel-element-3" class="panel-collapse collapse">
+						<div class="panel-body">
+							<ul>
+								<li><a hre="#" id="menu" onclick="switchIframe(this)">菜单基本信息</a></li>
+								<li><a hre="#" id="catalog" onclick="switchIframe(this)">菜品种类信息</a></li>
+								<li><a hre="#" id="discount" onclick="switchIframe(this)">促销产品信息</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<img src="/static/image/right.png" class="pane-right"/>
+						<img src="/static/image/order.png" class="pane-employee" />
+						 <a class="panel-title collapsed" onclick="switchPhoto(this)" data-toggle="collapse" data-parent="#panel-left" href="#panel-element-4">订单基本信息</a>
+					</div>
+					<div id="panel-element-4" class="panel-collapse collapse">
+						<div class="panel-body">
+							<ul>
+								<li><a hre="#" id="order" onclick="switchIframe(this)">订单信息</a></li>
+								<li><a hre="#" id="sales" onclick="switchIframe(this)">销售情况</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+				<div class="panel panel-default">
+					<div class="panel-heading" >
+						<img src="/static/image/right.png" class="pane-right"/>
+						<img src="/static/image/robot.png" class="pane-employee" />
+						 <a class="panel-title collapsed" onclick="switchPhoto(this)" data-toggle="collapse" data-parent="#panel-left" href="#panel-element-5">餐桌及机器人信息</a>
+					</div>
+					<div id="panel-element-5" class="panel-collapse collapse">
+						<div class="panel-body">
+							<ul>
+								<li><a hre="#" id="table" onclick="switchIframe(this)">餐桌基本信息</a></li>
+								<li><a hre="#" id="robot" onclick="switchIframe(this)">Robot基本信息</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="panel-right">
+				<iframe id='contentIframe' width="100%" height="94%" src="" scrolling="no" frameborder="no"></iframe>
+			</div>
+			
+			<div id="footer">
+				<p>Copyright © 2020 &nbsp; Yan@Li &nbsp;&nbsp; All Rights Reserved.</p>	
+			</div>
+		</div>
+		
+	<script th:inline="javascript">
+		var phone = [[${session.user}]];
+		$('#updateAccount').val(phone);
+	</script>
+		
+	</body>
+	
+</html>

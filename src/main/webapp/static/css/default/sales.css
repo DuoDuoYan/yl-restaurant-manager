@@ -1,0 +1,31 @@
+html {
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+}
+.select-date{
+    float: left;
+    margin-left: 20px;
+    margin-top: 5px;
+    width: 600px;
+}
+
+.htmleaf-content{
+    width: 85%;
+    margin: 10px auto;
+}
+
+.search-date{
+    float: left;
+    margin-left: 20px;
+}
+.month table {
+    display: none;
+}
+.input-group{
+    width: 300px;
+}
