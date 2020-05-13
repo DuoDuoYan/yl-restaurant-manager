@@ -27,9 +27,17 @@ public interface UserService {
 
     Double findBalance(String phone);
 
-    int updateBalance(String phone,String price);
+    int updateBalance(String phone,Double price);
 
     int createOrder(Order order);
 
-    int createOrderDetail(OrderDetail orderDetail);
+    List<Order> getOrder(String phone);
+
+    List<Order> getOnOrders();
+
+    List<Order> getOrdersByCooker(String phone);
+
+    List<OrderDetail> getOrderDetailByOrderNum(Integer orderNum,String tables);
+
+    int updateOrder(Order order);
 }

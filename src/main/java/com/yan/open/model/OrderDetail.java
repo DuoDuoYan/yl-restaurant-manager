@@ -11,7 +11,19 @@ public class OrderDetail implements Serializable{
 
     private Integer id;
 
+    @SerializedName("order_num")
+    private Integer orderNum;
+
+    @SerializedName("table_num")
+    private Integer tableNum;
+
+    private String tables;
+
+    private String position;
+
     private String food;
+
+    private String foodName;
 
     private Double price;
 

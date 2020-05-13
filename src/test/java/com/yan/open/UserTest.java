@@ -1,21 +1,27 @@
 package com.yan.open;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.yan.open.controller.UserController;
 import com.yan.open.dao.MenuDao;
 import com.yan.open.dao.SaleDao;
 import com.yan.open.dao.UserDao;
-import com.yan.open.model.*;
+import com.yan.open.model.Foods;
+import com.yan.open.model.Order;
+import com.yan.open.model.OrderDetail;
+import com.yan.open.model.Sales;
 import com.yan.open.service.MenuService;
 import com.yan.open.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,6 +45,7 @@ public class UserTest extends BaseJunit4Test {
 
     @Autowired
     private MenuService menuService;
+    private Order order;
 
     @Test
     public void testSales(){
@@ -111,10 +118,10 @@ public class UserTest extends BaseJunit4Test {
             list.add(aa);
         }
         list.add(arr[arr.length-1]);
-        for(int j=0;j<list.size();j++){
-            Foods foods = JSONObject.parseObject(list.get(j),Foods.class);
-            log.info("Foods:"+foods);
-        }
+//        for(int j=0;j<list.size();j++){
+//            Foods foods = JSONObject.parseObject(list.get(j),Foods.class);
+//            log.info("Foods:"+foods);
+//        }
     }
     @Test
     public void test2(){
@@ -142,4 +149,36 @@ public class UserTest extends BaseJunit4Test {
         System.out.println(new Date().getTime());
 
     }
+    @Test
+    public void testOrder(){
+
+        Gson gson1 = new Gson();
+        String str = gson1.toJson(userService.getOnOrders());
+
+        System.out.println(userService.getOnOrders());
+        System.out.println(str);
+
+        //gson
+        Gson gson = new Gson();
+        JsonArray jsonArray = new JsonParser().parse(str).getAsJsonArray();
+        for(int i=0;i<jsonArray.size();i++){
+            Order order = gson.fromJson(jsonArray.get(i),Order.class);
+            System.out.println(order);
+        }
+    }
+
+        @Test
+        public void testsd(){
+            Order order = new Order();
+            order.setCooker("44");
+            order.setRobotNum("2");
+            order.setId(90);
+//            userDao.updateOrderCookerStatus(order.getCooker(),1,order.getId());
+//            userDao.updateOrderRobotStatus(order.getRobotNum(),2,order.getId());
+//            userDao.updateOrderStatus(3,order.getId());
+            log.info("orders:"+userDao.getOrder("111"));
+        }
+
+
+
 }

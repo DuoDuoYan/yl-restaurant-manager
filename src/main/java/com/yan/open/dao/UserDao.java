@@ -1,9 +1,6 @@
 package com.yan.open.dao;
 
-import com.yan.open.model.Foods;
-import com.yan.open.model.Menu;
-import com.yan.open.model.Table;
-import com.yan.open.model.User;
+import com.yan.open.model.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -76,7 +73,6 @@ public interface UserDao {
     @Select("SELECT * FROM `table` \n")
     List<Table> findTables();
 
-
     @Select("select image from menu")
     List<String> findAllImage();
     /**
@@ -88,16 +84,50 @@ public interface UserDao {
     /**
      * 生成订单
      */
-    @Insert("insert into orders (table_id,robot_id,order_date,order_status,total_price,customer,cooker) values(#{tableId},#{robotId},#{orderDate},#{orderStatus},#{totalPrice},#{customer},#{cooker})\n")
-    int createOrder(@Param("tableId")String tableId,@Param("robotId")String robotId,@Param("orderDate")String orderDate,@Param("orderStatus")int orderStatus,@Param("totalPrice")double totalPrice,@Param("customer")String customer,@Param("cooker")String cooker);
+    @Insert("insert into orders (table_num,robot_num,order_date,order_status,total_price,customer,cooker) values(#{tableId},#{robotId},#{orderDate},#{orderStatus},#{totalPrice},#{customer},#{cooker})\n")
+    int createOrder(@Param("tableId")String tableId,@Param("robotId")String robotId,@Param("orderDate")Long orderDate,@Param("orderStatus")int orderStatus,@Param("totalPrice")double totalPrice,@Param("customer")String customer,@Param("cooker")String cooker);
 
     /**
-     *根据phone查找订单id
+     *根据phone,date查找订单id
      */
-    @Select("select id from orders where phone = #{phone}")
-    int findOrderIdByPhone(@Param("phone")String phone);
+    @Select("select id from orders where customer = #{customer} and order_date = #{date}")
+    int findOrderIdByPhone(@Param("date")Long date,@Param("customer")String customer);
 
-    @Select("select price from food where id = #{id}")
-    double findPrice(@Param("id")int id);
+    @Select("select price from menu where id = #{id}")
+    double findPrice(@Param("id")Integer id);
+
+    @Select("select o.id,table_num,r.num,order_date,order_status,total_price,customer,cooker from orders o\n" +
+            "LEFT JOIN robot r ON o.robot_num = r.id\n" +
+            "where customer = #{phone} order by id desc")
+    List<Order> getOrder(@Param("phone")String phone);
+
+    @Select("select o.id,t.num as tables,r.num as robot,order_date,order_status,total_price,customer,cooker \n" +
+            "from orders o\n" +
+            "LEFT JOIN robot r ON o.robot_num = r.id\n" +
+            "LEFT JOIN `table` t on t.id = o.table_num \n" +
+            "order by id desc")
+    List<Order> getOnOrders();
+
+    @Select("select o.id,o.order_num,m.food as foodName,o.quantity,o.price from order_detail o \n" +
+            "LEFT JOIN menu m on o.food = m.id\n" +
+            "where order_num = #{id}")
+    List<OrderDetail> getOrderDetail(@Param("id")Integer id);
+
+    @Select("select * from orders where cooker = #{phone}")
+    List<Order> getOrdersByCooker(@Param("phone")String phone);
+
+    @Select("select m.food,t.num as tables,t.position,d.quantity " +
+            "from order_detail d,`table` t,menu m\n" +
+            "where d.food = m.id and t.num = #{tables} and d.order_num = #{orderNum}")
+    List<OrderDetail> getOrderDetailByOrderNum(@Param("orderNum")Integer orderNum,@Param("tables")String tables);
+
+    @Update("UPDATE orders set cooker = #{cooker} ,order_status= #{status} WHERE id = #{id}\n")
+    int updateOrderCookerStatus(@Param("cooker")String cooker,@Param("status")Integer status,@Param("id")Integer id);
+
+    @Update("UPDATE orders set robot_num = #{robot} ,order_status= #{status} WHERE id = #{id}\n")
+    int updateOrderRobotStatus(@Param("robot")String robot,@Param("status")Integer status,@Param("id")Integer id);
+
+    @Update("UPDATE orders set order_status= #{status} WHERE id = #{id}\n")
+    int updateOrderStatus(@Param("status")Integer status,@Param("id")Integer id);
 
 }

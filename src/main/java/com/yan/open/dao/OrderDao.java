@@ -20,7 +20,7 @@ public interface OrderDao {
     @Select("<script>" +
             "SELECT o.id,t.num table_num,r.num robot_num,o.order_date,o.order_status,o.total_price,a.username as customer,b.username as cooker \n" +
             "FROM user as a,user as b,orders as o,`table` t,robot r\n" +
-            "where a.phone = o.customer and b.phone = o.cooker and o.table_id = t.id and o.robot_id = r.id\n" +
+            "where a.phone = o.customer and b.phone = o.cooker and o.table_num = t.id and o.robot_num = r.id\n" +
             "<if test='startDate != null'>and o.order_date &gt;= #{startDate}</if>\n" +
             "<if test='endDate != null'>and o.order_date &lt;= #{endDate}</if>\n" +
             "<if test='condition != null'>and o.id = #{condition}</if>\n" +

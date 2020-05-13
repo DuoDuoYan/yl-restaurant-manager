@@ -13,5 +13,6 @@ public class Table implements Serializable{
     private String num;
     private Integer status;
     private String statusName;
+    private String position;
 }
 

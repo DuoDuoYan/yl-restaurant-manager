@@ -32,10 +32,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findAllOrders(PageData pageData,String startTime,String endTime,String condition) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
         Integer start ;
         Integer end;
-        Long startDate = 0L;
-        Long endDate = 0L;
         Integer pageNo = pageData.getPageNo();
         Integer pageSize = pageData.getPageSize();
         if(pageNo == null || pageSize == null){
@@ -45,7 +44,8 @@ public class OrderServiceImpl implements OrderService {
             start = (pageNo-1)*pageSize;
             end = pageSize;
         }
-
+        Long startDate = 0L;
+        Long endDate = 0L;
         try {
             if(StringUtils.isEmpty(startTime)){
                 startDate = null;
@@ -69,10 +69,17 @@ public class OrderServiceImpl implements OrderService {
 
         SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for(int i=0;i<orders.size();i++){
-            if(orders.get(i).getOrderStatus() == 0){
+            if(orders.get(i).getOrderStatus() == 3){
                 orders.get(i).setStatus("已完成");
-            }else{
-                orders.get(i).setStatus("未完成");
+            }
+            if(orders.get(i).getOrderStatus() == 0){
+                orders.get(i).setStatus("制作中");
+            }
+            if(orders.get(i).getOrderStatus() == 1){
+                orders.get(i).setStatus("接单中");
+            }
+            if(orders.get(i).getOrderStatus() == 2){
+                orders.get(i).setStatus("送餐中");
             }
             Date date = new Date(orders.get(i).getOrderDate());
             orders.get(i).setDate(sd.format(date));

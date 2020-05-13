@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -80,9 +81,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int updateBalance(String phone,String price) {
+    public int updateBalance(String phone,Double price) {
         Double origBalance = userDao.findBalance(phone);
-        return userDao.invest(origBalance-Double.valueOf(price),phone);
+        return userDao.invest(origBalance - price,phone);
     }
 
 
@@ -98,24 +99,90 @@ public class UserServiceImpl implements UserService{
             }
         }
 
-
         String table = order.getTableNum();
         String customer = order.getCustomer();
-        String date = order.getDate();
+        Long date = order.getOrderDate();
         Double totalPrice = order.getTotalPrice();
-
-        userDao.createOrder(table,"-1",date,0,totalPrice,customer,"-1");
-        int orderID = userDao.findOrderIdByPhone(customer);
         int tag = 0;
-        for (Map.Entry<Integer,Integer> entry : map.entrySet()){
-            Double price =  userDao.findPrice(entry.getKey());
-            tag = userDao.createOrderDetail(String.valueOf(orderID),entry.getKey(),entry.getValue(),price);
+        tag = userDao.createOrder(table,"-1",date,1,totalPrice,customer,"-1");
+        if(tag >0){
+            int orderID = userDao.findOrderIdByPhone(date,customer);
+
+            //生成订单详情
+            for (Map.Entry<Integer,Integer> entry : map.entrySet()){
+                Double price =  userDao.findPrice(entry.getKey());
+                tag = userDao.createOrderDetail(String.valueOf(orderID),entry.getKey(),entry.getValue(),price);
+                if(tag < 0){
+                    break;
+                }
+            }
+            return orderID;
         }
-        return tag;
+        return -1;
     }
 
     @Override
-    public int createOrderDetail(OrderDetail orderDetail) {
-        return 0;
+    public List<Order> getOrder(String phone) {
+        List<Order> list = userDao.getOrder(phone);
+
+        for(int i=0;i<list.size();i++) {
+            if (list.get(i).getOrderStatus() == 0) {
+                list.get(i).setStatus("接单中");
+            }
+            if (list.get(i).getOrderStatus() == 1) {
+                list.get(i).setStatus("制作中");
+            }
+            if (list.get(i).getOrderStatus() == 2) {
+                list.get(i).setStatus("送餐中");
+            }
+            if (list.get(i).getOrderStatus() == 3) {
+                list.get(i).setStatus("已完成");
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<Order> getOnOrders() {
+        List<Order> orders = userDao.getOnOrders();
+        log.info("dao:"+orders);
+        for(int i=0;i<orders.size();i++){
+            List<OrderDetail> orderDetails = userDao.getOrderDetail(orders.get(i).getId());
+            orders.get(i).setOrderDetail(orderDetails);
+        }
+        return orders;
+    }
+
+    @Override
+    public List<Order> getOrdersByCooker(String phone) {
+        return userDao.getOrdersByCooker(phone);
+    }
+
+    @Override
+    public List<OrderDetail> getOrderDetailByOrderNum(Integer orderNum,String tables) {
+        return userDao.getOrderDetailByOrderNum(orderNum,tables);
+    }
+
+    @Override
+    public int updateOrder(Order order) {
+        String tag = order.getTag();
+        if("1".equals(tag)){
+            String cooker = order.getCooker();
+            Integer id = order.getId();
+            Integer status = 1;
+            return userDao.updateOrderCookerStatus(cooker,status,id);
+        }
+        if("2".equals(tag)){
+            String robot = order.getRobotNum();
+            Integer id = order.getId();
+            Integer status = 2;
+            return userDao.updateOrderRobotStatus(robot,status,id);
+        }
+        if("3".equals(tag)){
+            Integer id = order.getId();
+            Integer status = 3;
+            return userDao.updateOrderStatus(status,id);
+        }
+        return -1;
     }
 }
