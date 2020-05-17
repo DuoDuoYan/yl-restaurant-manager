@@ -81,6 +81,12 @@ public interface UserDao {
     @Insert("insert into order_detail (order_num,food,quantity,price) values(#{orderNum},#{food},#{quantity},#{price})")
     int createOrderDetail(@Param("orderNum")String orderNum,@Param("food")int food,@Param("quantity")int quantity,@Param("price")double price);
 
+    @Select("select quantity,selled from menu where id = #{id})")
+    Menu getFoodSelledQuantity(@Param("id")int id);
+
+    @Update("update menu set quantity = #{quantity},selled = #{selled} where id = #{id}\n")
+    int updateFoodSelledQuantity(@Param("id")int id,@Param("selled")int selled,@Param("quantity")int quantity);
+
     /**
      * 生成订单
      */
@@ -105,8 +111,9 @@ public interface UserDao {
             "from orders o\n" +
             "LEFT JOIN robot r ON o.robot_num = r.id\n" +
             "LEFT JOIN `table` t on t.id = o.table_num \n" +
+            "where o.order_status = #{status} " +
             "order by id desc")
-    List<Order> getOnOrders();
+    List<Order> getOnOrders(@Param("status")Integer status);
 
     @Select("select o.id,o.order_num,m.food as foodName,o.quantity,o.price from order_detail o \n" +
             "LEFT JOIN menu m on o.food = m.id\n" +

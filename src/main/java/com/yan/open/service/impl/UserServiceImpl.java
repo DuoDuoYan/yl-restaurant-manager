@@ -112,6 +112,10 @@ public class UserServiceImpl implements UserService{
             for (Map.Entry<Integer,Integer> entry : map.entrySet()){
                 Double price =  userDao.findPrice(entry.getKey());
                 tag = userDao.createOrderDetail(String.valueOf(orderID),entry.getKey(),entry.getValue(),price);
+                Menu menu = userDao.getFoodSelledQuantity(entry.getKey());
+                int quantity = menu.getQuantity();
+                int selled = menu.getSelled();
+                tag = userDao.updateFoodSelledQuantity(entry.getKey(),selled,quantity);
                 if(tag < 0){
                     break;
                 }
@@ -144,7 +148,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<Order> getOnOrders() {
-        List<Order> orders = userDao.getOnOrders();
+        List<Order> orders = userDao.getOnOrders(0);
         log.info("dao:"+orders);
         for(int i=0;i<orders.size();i++){
             List<OrderDetail> orderDetails = userDao.getOrderDetail(orders.get(i).getId());
